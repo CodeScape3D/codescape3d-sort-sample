@@ -1,27 +1,21 @@
-import React, { useEffect, useRef } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import { useSelector } from "react-redux";
+import "./Panel.css";
 
 function Panel() {
-  const preRef = useRef(null);
+  const {
+    array,
+    currentBubbleTwo,
+    currentSwappers,
+    currentSorted,
+    currentLine,
+  } = useSelector((state) => state.bubleSort);
 
-  const preContent = `
-    do
-    swapped = false
-    for i = 1 to indexOfLastUnsortedElement-1
-      if leftElement rightElement
-        swap(leftElement, rightElement)
-        swapped = true; ++swapCounter
-    while swapped`;
-
-  const { array, currentBubbleTwo, currentSwappers, currentSorted } =
-    useSelector((state) => state.bubleSort);
-
-  const [paso, setPaso] = React.useState("Inicia el ordenamiento");
-  const [lines, setLines] = React.useState([]);
+  const [paso, setPaso] = useState("Inicia el ordenamiento");
+  const [prevCurrentLine, setPrevCurrentLine] = useState(null);
+  const codeRef = useRef(null);
 
   useEffect(() => {
-    let debug;
-
     if (currentBubbleTwo.length === 2) {
       setPaso(
         "Se comparan los elementos " +
@@ -29,7 +23,6 @@ function Panel() {
           " y " +
           array[currentBubbleTwo[1]]
       );
-      debug = 4;
     }
 
     if (currentSwappers.length === 3) {
@@ -39,76 +32,52 @@ function Panel() {
           " y " +
           array[currentSwappers[1]]
       );
-      debug = 5;
     }
 
     if (currentSorted.length === array.length) {
       setPaso("El ordenamiento ha finalizado");
     }
 
-    const lines = preContent.split("\n").map((line, index) => {
-      if (index === debug) {
-        return (
-          <div
-            key={index}
-            style={{ backgroundColor: "rgba(78, 216, 96, 0.8)" }}
-          >
-            {line}
-          </div>
-        );
-      } else {
-        return <div key={index}>{line}</div>;
-      }
-    });
+    if (codeRef.current) {
+      const currentElement = codeRef.current.childNodes[currentLine];
+      const prevElement = codeRef.current.childNodes[prevCurrentLine];
 
-    setLines(lines);
-  }, [array, currentBubbleTwo, currentSwappers, currentSorted, preContent]);
+      if (prevElement) {
+        prevElement.style.backgroundColor = "transparent";
+      }
+
+      if (currentElement) {
+        currentElement.style.backgroundColor = "#4286f4cc";
+      }
+
+      setPrevCurrentLine(currentLine);
+    }
+  }, [
+    array,
+    currentBubbleTwo,
+    currentSwappers,
+    currentSorted,
+    currentLine,
+    prevCurrentLine,
+  ]);
 
   return (
     <div style={{ position: "absolute", bottom: 0, right: 0 }}>
       <div>
-        <h3
-          style={{
-            position: "absolute",
-            bottom: "10px",
-            right: "10px",
-            whiteSpace: "nowrap",
-            padding: "0 5px 0 0",
-            color: "#130E09",
-          }}
-        >
-          Bubble Sort
-        </h3>
-        <div
-          style={{
-            position: "absolute",
-            bottom: "60px",
-            right: 0,
-            backgroundColor: "#eeeeee",
-            padding: "10px",
-            width: "380px",
-            overflow: "hidden",
-            color: "#fff",
-          }}
-        >
-          <pre ref={preRef}>{lines}</pre>
+        <h3>Bubble Sort</h3>
+        <div className="container-code">
+          <code ref={codeRef}>
+            <pre>{`do`}</pre>
+            <pre>{`   swapped = false
+   for i = 1 to indexOfLastUnsortedElement-1`}</pre>
+            <pre>{`     if leftElement rightElement`}</pre>
+            <pre>{`       swap(leftElement, rightElement)
+       swapped = true; ++swapCounter`}</pre>
+            <pre>{` while swapped`}</pre>
+          </code>
         </div>
 
-        <div
-          style={{
-            position: "absolute",
-            bottom: "250px",
-            right: 0,
-            backgroundColor: "#eeeeee",
-            padding: "10px",
-            width: "380px",
-            overflow: "hidden",
-            color: "#000",
-            fontSize: "1em",
-          }}
-        >
-          {paso}
-        </div>
+        <div className="container-paso">{paso}</div>
       </div>
     </div>
   );

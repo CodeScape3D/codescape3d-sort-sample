@@ -1,6 +1,9 @@
 # CodeScape3D Sample BubleSort 
 Este proyecto es un ejemplo de implementación de un método de ordenamiento en el OVA CodeScape3D, utilizando React, Threejs y el gestor de paquetes npm. El objetivo de este proyecto es proporcionar un punto de partida para implementar algoritmos de ordenamiento en CodeScape3D.
 
+![Interfaz](https://res.cloudinary.com/dxuauzyp9/image/upload/v1677443228/sample-codescape3d_drftix.png)
+
+
 ## Requisitos previos
 Antes de comenzar a utilizar este proyecto, asegúrate de tener instalado en tu ordenador:
 

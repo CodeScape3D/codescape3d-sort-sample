@@ -6,12 +6,10 @@ import { GLTFLoader } from "three/examples/jsm/loaders/GLTFLoader";
 
 const Mesa = () => {
   const mountRef = useRef(null);
-
   const { array } = useSelector((state) => state.bubleSort);
 
-  useEffect(() => {
-    //console.log(array);
-  }, [array]);
+  let cardMeshes = [];
+  const scene = new THREE.Scene();
 
   useEffect(() => {
     //Data from the canvas
@@ -19,7 +17,7 @@ const Mesa = () => {
     const { clientWidth: width, clientHeight: height } = currentRef;
 
     // camera, renderer
-    const scene = new THREE.Scene();
+
     scene.background = new THREE.Color(0xeeeeee);
     const camera = new THREE.PerspectiveCamera(27, width / height, 0.1, 100);
     scene.add(camera);
@@ -77,22 +75,8 @@ const Mesa = () => {
       castAndReceiveShadow();
     });
 
-    /*
-    //cargamos los datos del array
-    // Variables para los objetos 3D
-    // Crear los objetos 3D para representar los números del arreglo
-    for (let i = 0; i < array.length; i++) {
-      let cube = new THREE.Mesh(
-        new THREE.BoxGeometry(0.1, 0.1, 0.1),
-        new THREE.MeshBasicMaterial({ color: 0x00ff00 })
-      );
-      cube.position.x = (i - array.length / 4) *-1;
-      cube.scale.y = array[i] / 40;
-      cube.position.y = 1.5;
-      scene.add(cube);
-    }
+    createCards();
 
-    */
     //sombras
     const castAndReceiveShadow = () => {
       scene.traverse((child) => {
@@ -123,12 +107,69 @@ const Mesa = () => {
       requestAnimationFrame(animate);
     };
     animate();
-
     return () => {
       window.removeEventListener("resize", resize);
       currentRef.removeChild(renderer.domElement);
     };
-  }, []);
+  }, [cardMeshes]);
+
+  const createCards = () => {
+    // Eliminar las cartas antiguas de la escena
+    cardMeshes.forEach((cardMesh) => scene.remove(cardMesh));
+
+    // Crear nuevas cartas
+    cardMeshes = [];
+    const cardGroup = new THREE.Group();
+    for (let i = 0; i < array.length; i++) {
+      // Crear la geometría y material de la carta
+      const cardGeometry = new THREE.BoxGeometry(0.15, 0.01, 0.25);
+      const cardMaterial = new THREE.MeshPhysicalMaterial({ color: 0xfffeee });
+
+      // Crear la malla de la carta
+      const cardMesh = new THREE.Mesh(cardGeometry, cardMaterial);
+      cardMesh.position.y = 0.63;
+      cardMesh.position.z = 0;
+      cardMesh.position.x = (i - array.length / 2) * 0.17;
+
+      // Agregar el número como hijo de la carta
+      const numberTexture = new THREE.CanvasTexture(
+        createNumberCanvas(array[i])
+      );
+      const numberMaterial = new THREE.MeshStandardMaterial({
+        map: numberTexture,
+        color: 0x000000,
+        transparent: true,
+      });
+      const numberGeometry = new THREE.PlaneGeometry(0.1, 0.1);
+      const numberMesh = new THREE.Mesh(numberGeometry, numberMaterial);
+      numberMesh.position.set(0, 0.01, 0);
+      numberMesh.rotateX(-Math.PI / 2);
+      cardMesh.add(numberMesh);
+      cardMeshes.push(cardMesh);
+      cardGroup.add(cardMesh);
+    }
+
+    cardGroup.rotateY(Math.PI / 2);
+    cardGroup.position.z = -0.1;
+    scene.add(cardGroup);
+  };
+
+  function createNumberCanvas(number) {
+    const canvas = document.createElement("canvas");
+    canvas.width = 32;
+    canvas.height = 32;
+    const ctx = canvas.getContext("2d");
+    ctx.fillStyle = "#fff";
+    ctx.font = "bold 20px Arial";
+    ctx.textAlign = "center";
+    ctx.textBaseline = "middle";
+    ctx.fillText(number.toString(), 16, 16);
+    return canvas;
+  }
+
+  useEffect(() => {
+    createCards();
+  }, [array]);
 
   return (
     <div

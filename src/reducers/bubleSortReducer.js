@@ -5,6 +5,7 @@ import {
   SET_CURRENT_SWAPPERS,
   SET_RUNNING,
   SET_SPEED,
+  SET_CURRENT_LINE,
 } from "../constants/bubleSortConstants";
 
 const initialState = {
@@ -14,6 +15,7 @@ const initialState = {
   currentSwappers: [],
   running: false,
   speed: 1000,
+  currentLine: 0,
 };
 
 export const bubleSortReducer = (state = initialState, action) => {
@@ -47,6 +49,11 @@ export const bubleSortReducer = (state = initialState, action) => {
       return {
         ...state,
         speed: action.payload,
+      };
+    case SET_CURRENT_LINE:
+      return {
+        ...state,
+        currentLine: action.payload,
       };
     default:
       return state;
