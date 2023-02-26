@@ -16,21 +16,25 @@ function Panel() {
   const codeRef = useRef(null);
 
   useEffect(() => {
-    if (currentBubbleTwo.length === 2) {
+    if (currentLine === 1) {
+      setPaso("Se establece intercambiado como falso; se iteran los elementos");
+    }
+
+    if (currentBubbleTwo.length === 2 && currentLine !== 1) {
       setPaso(
-        "Se comparan los elementos " +
-          array[currentBubbleTwo[0]] +
+        "Se comparan los indices " +
+          currentBubbleTwo[0] +
           " y " +
-          array[currentBubbleTwo[1]]
+          currentBubbleTwo[1]
       );
     }
 
     if (currentSwappers.length === 3) {
       setPaso(
-        "Se intercambian los elementos " +
-          array[currentSwappers[0]] +
+        "Se intercambian los indices " +
+          currentSwappers[0] +
           " y " +
-          array[currentSwappers[1]]
+          currentSwappers[1]
       );
     }
 
