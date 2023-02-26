@@ -91,6 +91,7 @@ function handleDispatch(toDispatch, dispatch, array, speed) {
       dispatch(setCurrentBubbleTwo([]));
       dispatch(setCurrentSorted(array.map((num, index) => index)));
       dispatch(setRunning(false));
+      dispatch(setCurrentLine(null));
     }, 900);
     return;
   }
@@ -110,7 +111,7 @@ function handleDispatch(toDispatch, dispatch, array, speed) {
     dispatch(setCurrentLine(3));
   }
   if (dispatchFunction === setCurrentSorted) {
-    dispatch(setCurrentLine(4));
+    dispatch(setCurrentLine(1));
   }
 
   dispatch(dispatchFunction(toDispatch.shift()));

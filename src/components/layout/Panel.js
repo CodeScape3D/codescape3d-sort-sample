@@ -67,13 +67,12 @@ function Panel() {
         <h3>Bubble Sort</h3>
         <div className="container-code">
           <code ref={codeRef}>
-            <pre>{`do`}</pre>
-            <pre>{`   swapped = false
-   for i = 1 to indexOfLastUnsortedElement-1`}</pre>
-            <pre>{`     if leftElement rightElement`}</pre>
-            <pre>{`       swap(leftElement, rightElement)
-       swapped = true; ++swapCounter`}</pre>
-            <pre>{` while swapped`}</pre>
+            <pre>{`mientras intercambiado sea true hacer:`}</pre>
+            <pre>{`   intercambiado = false
+   para i de 0 a longitud(arr)-2 hacer:`}</pre>
+            <pre>{`     si arr[i] > arr[i+1] entonces:`}</pre>
+            <pre>{`       intercambiar(arr[i], arr[i+1])
+       intercambiado = true`}</pre>
           </code>
         </div>
 
