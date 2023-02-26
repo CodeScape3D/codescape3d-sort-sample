@@ -1,6 +1,7 @@
 import {
   SET_ARRAY,
   SET_CURRENT_BUBBLE_TWO,
+  SET_CURRENT_LINE,
   SET_CURRENT_SORTED,
   SET_CURRENT_SWAPPERS,
   SET_RUNNING,
@@ -49,6 +50,13 @@ export function setSpeed(speed) {
   };
 }
 
+export function setCurrentLine(line) {
+  return {
+    type: SET_CURRENT_LINE,
+    payload: line,
+  };
+}
+
 export function bubbleSort(stateArray, dispatch, speed) {
   let array = stateArray.slice(0),
     toDispatch = [],
@@ -94,7 +102,19 @@ function handleDispatch(toDispatch, dispatch, array, speed) {
       : toDispatch[0].length === 2 && typeof toDispatch[0][0] === "boolean"
       ? setCurrentSorted
       : setCurrentBubbleTwo;
+
+  if (dispatchFunction === setCurrentBubbleTwo) {
+    dispatch(setCurrentLine(2));
+  }
+  if (dispatchFunction === setArray) {
+    dispatch(setCurrentLine(3));
+  }
+  if (dispatchFunction === setCurrentSorted) {
+    dispatch(setCurrentLine(4));
+  }
+
   dispatch(dispatchFunction(toDispatch.shift()));
+
   setTimeout(() => {
     handleDispatch(toDispatch, dispatch, array, speed);
   }, speed);

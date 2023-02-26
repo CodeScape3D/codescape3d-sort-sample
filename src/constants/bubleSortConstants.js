@@ -11,3 +11,6 @@ export const SET_RUNNING = "SET_RUNNING";
 
 //para setear la velocidad del ordenamiento
 export const SET_SPEED = "SET_SPEED";
+
+//para tener la linea del codigo que se esta ejecutando en el momento
+export const SET_CURRENT_LINE = "SET_CURRENT_LINE";
