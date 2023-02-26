@@ -47,7 +47,16 @@ function Navbar() {
 
   return (
     <nav className="navbar navbar-expand-lg navbar-light bg-light">
-      <span className="navbar-brand">CodeScape3D</span>
+      <span className="navbar-brand">
+        <img
+          className="d-inline-block align-top mx-2"
+          src="./assets/logo.png"
+          alt="logo"
+          width="30"
+          height="30"
+        />
+        CodeScape3D
+      </span>
       <button
         className="navbar-toggler"
         type="button"
