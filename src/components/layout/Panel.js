@@ -17,7 +17,9 @@ function Panel() {
 
   useEffect(() => {
     if (currentLine === 1) {
-      setPaso("Se establece intercambiado como falso; se iteran los elementos");
+      setPaso(
+        "Se establece intercambiado como falso; se iteran los elementos adyascentes"
+      );
     }
 
     if (currentBubbleTwo.length === 2 && currentLine !== 1) {
